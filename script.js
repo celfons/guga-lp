@@ -23,30 +23,52 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // ===========================
-// Navbar Scroll Effect
+// Utility: Debounce Function
 // ===========================
-window.addEventListener('scroll', function() {
+function debounce(func, wait = 10) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+// ===========================
+// Consolidated Scroll Handler
+// ===========================
+function handleScroll() {
+    // Navbar scroll effect
     const navbar = document.querySelector('.navbar');
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-});
-
-// ===========================
-// Scroll to Top Button
-// ===========================
-const scrollTopBtn = document.getElementById('scrollTop');
-
-window.addEventListener('scroll', function() {
+    
+    // Scroll to top button visibility
+    const scrollTopBtn = document.getElementById('scrollTop');
     if (window.scrollY > 300) {
         scrollTopBtn.classList.add('show');
     } else {
         scrollTopBtn.classList.remove('show');
     }
-});
+    
+    // Active navigation link
+    setActiveNavLink();
+}
 
+// Debounced scroll handler
+const debouncedScroll = debounce(handleScroll, 10);
+window.addEventListener('scroll', debouncedScroll);
+
+// ===========================
+// Scroll to Top Button Click
+// ===========================
+const scrollTopBtn = document.getElementById('scrollTop');
 scrollTopBtn.addEventListener('click', function() {
     window.scrollTo({
         top: 0,
@@ -172,28 +194,6 @@ document.addEventListener('click', function(event) {
         }
     }
 });
-
-// ===========================
-// Performance: Debounce Scroll Events
-// ===========================
-function debounce(func, wait = 10) {
-    let timeout;
-    return function executedFunction(...args) {
-        const later = () => {
-            clearTimeout(timeout);
-            func(...args);
-        };
-        clearTimeout(timeout);
-        timeout = setTimeout(later, wait);
-    };
-}
-
-// Apply debounce to scroll events
-const debouncedScroll = debounce(() => {
-    setActiveNavLink();
-});
-
-window.addEventListener('scroll', debouncedScroll);
 
 // ===========================
 // Initialize all features on page load
