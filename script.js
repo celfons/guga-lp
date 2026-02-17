@@ -80,8 +80,6 @@ function setActiveNavLink() {
     });
 }
 
-window.addEventListener('scroll', setActiveNavLink);
-
 // ===========================
 // Form Submission Handler
 // ===========================
@@ -159,19 +157,6 @@ if (document.readyState === 'loading') {
 } else {
     animateOnScroll();
 }
-
-// ===========================
-// Preload Images
-// ===========================
-function preloadImages() {
-    const images = document.querySelectorAll('img[src]');
-    images.forEach(img => {
-        const newImg = new Image();
-        newImg.src = img.src;
-    });
-}
-
-window.addEventListener('load', preloadImages);
 
 // ===========================
 // Mobile Menu Close on Click Outside
